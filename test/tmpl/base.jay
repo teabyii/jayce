@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>hello jayce</title>
+</head>
+<body>
+  <nav>
+    <ul>
+      {nav, item@}
+      <li><a href="{item.href}">{item.text}</a></li>
+      {/@}
+    </ul>
+  </nav>
+  <article>
+    <h2>Title -
+      {article.year >= 2014 ?}
+        Recently
+      {:article.year >= 1990 ?}
+        After 1990
+      {:?}
+        Long since
+      {/?}
+    </h2>
+    <div class="content">
+      {#article.content}
+    </div>
+  </article>
+  <footer>Copyright by {author}</footer>
+</body>
+</html>

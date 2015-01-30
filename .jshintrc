@@ -1,0 +1,26 @@
+{
+  "node": true,
+  "esnext": true,
+  "indent": 2,
+  "smarttabs": true,
+  "latedef": "nofunc",
+  "undef": true,
+  "unused": true,
+  "trailing": true,
+  "laxcomma": false,
+  "curly": true,
+  "eqeqeq": false,
+  "eqnull": true,
+  "asi": true,
+  "boss": true,
+  "expr": true,
+  "sub": true,
+  "-W065": true,
+  
+  "globals": {
+    "define": true,
+    "describe": true,
+    "expect": true,
+    "it": true
+  }
+}

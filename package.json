@@ -1,0 +1,27 @@
+{
+  "name": "jayce",
+  "version": "0.0.1",
+  "description": "Another Template",
+  "main": "index.js",
+  "scripts": {
+    "test": "node_modules/.bin/mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jsenjoy/jayce"
+  },
+  "keywords": [
+    "template",
+    "functional",
+    "util"
+  ],
+  "author": "Boom.Lee <boom11235.gg@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jsenjoy/jayce/issues"
+  },
+  "homepage": "https://github.com/jsenjoy/jayce",
+  "devDependencies": {
+    "mocha": "^2.1.0"
+  }
+}
