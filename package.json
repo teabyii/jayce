@@ -1,7 +1,7 @@
 {
   "name": "jayce",
   "version": "0.1.0",
-  "description": "Another Template",
+  "description": "Another simple template engine. Just a little different",
   "main": "index.js",
   "scripts": {
     "test": "node_modules/.bin/mocha"
@@ -22,6 +22,7 @@
   },
   "homepage": "https://github.com/jsenjoy/jayce",
   "devDependencies": {
+    "expect.js": "^0.3.1",
     "mocha": "^2.1.0"
   }
 }
