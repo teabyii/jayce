@@ -1,6 +1,6 @@
 {
   "name": "jayce",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Another Template",
   "main": "index.js",
   "scripts": {
