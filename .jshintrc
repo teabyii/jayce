@@ -16,6 +16,7 @@
   "expr": true,
   "sub": true,
   "-W065": true,
+  "evil": true,
   
   "globals": {
     "define": true,

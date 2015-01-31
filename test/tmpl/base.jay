@@ -8,7 +8,7 @@
   <nav>
     <ul>
       {nav, item@}
-      <li><a href="{item.href}">{item.text}</a></li>
+      <li><a href="{item.href$}">{item.text$}</a></li>
       {/@}
     </ul>
   </nav>
@@ -16,16 +16,16 @@
     <h2>Title -
       {article.year >= 2014 ?}
         Recently
-      {:article.year >= 1990 ?}
+      {article.year >= 1990 :?}
         After 1990
       {:?}
         Long since
       {/?}
     </h2>
     <div class="content">
-      {#article.content}
+      {article.content$}
     </div>
   </article>
-  <footer>Copyright by {author}</footer>
+  <footer>Copyright by {author$}</footer>
 </body>
 </html>

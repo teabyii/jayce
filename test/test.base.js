@@ -4,7 +4,7 @@ var fs = require('fs')
 
 describe('Variables', function () {
   it('Basic', function () {
-    var tmpl = '<span class="label">{tip}</span>'
+    var tmpl = '<span class="label">{tip$}</span>'
     var data = { tip: 'new' }
     
     var html = jayce.render(tmpl, data)
@@ -12,7 +12,7 @@ describe('Variables', function () {
   })
   
   it('Multi', function () {
-    var tmpl = '<ul><li>{name}</li><li>{mobile}</li></ul>'
+    var tmpl = '<ul><li>{name$}</li><li>{mobile$}</li></ul>'
     var data = {
       name: 'Boom',
       mobile: '123456'
@@ -23,13 +23,13 @@ describe('Variables', function () {
   })
   
   it('HTML escape', function () {
-    var tmpl = '<article></article>'
+    var tmpl = '<article>{content$}</article>'
     var data = {
       content: '<div>hello</div>'
     }
     
     var html = jayce.render(tmpl, data)
-    expect(html).to.be('<article>&lt;div&gt;hello&lt;div&gt;</article>')
+    expect(html).to.be('<article>&#60;div&#62;hello&#60;/div&#62;</article>')
   })
   
   it('Filter', function () {
@@ -37,7 +37,7 @@ describe('Variables', function () {
       return new Date(str).getFullYear()
     })
     
-    var tmpl = '<span class="time">{time | format}</span>'
+    var tmpl = '<span class="time">{time | format$}</span>'
     var data = { time: '2015-1-1 06:00' }
     
     var html = jayce.render(tmpl, data)
@@ -63,7 +63,7 @@ describe('Condition', function () {
   })
   
   it('Basic - else', function () {
-    var tmpl = '<div>{user?}<h2>hello</h2>{:?}<p>no body</p>{/?}'
+    var tmpl = '<div>{user?}<h2>hello</h2>{:?}<p>no body</p>{/?}</div>'
     var data = { user: 0 }
     
     var html = jayce.render(tmpl, data)
@@ -71,7 +71,7 @@ describe('Condition', function () {
   })
   
   it('Multi-condition', function () {
-    var tmpl = '<p>{user < 0?}negative{:user == 0?}zero{:?}positive{/?}'
+    var tmpl = '<p>{user < 0?}negative{user == 0:?}zero{:?}positive{/?}</p>'
     var data = { user: 0 }
     
     var html = jayce.render(tmpl, data)
@@ -81,7 +81,7 @@ describe('Condition', function () {
 
 describe('Traverse', function () {
   it('Basic', function () {
-    var tmpl = '<ul>{list, item, key@}{/@}<li>{key}:{item}</li></ul>'
+    var tmpl = '<ul>{list, item, key@}<li>{key$}:{item$}</li>{/@}</ul>'
     var data = {
       list: ['a', 'b']
     }
@@ -91,7 +91,7 @@ describe('Traverse', function () {
   })
   
   it('Basic - only item', function () {
-    var tmpl = '<div class="{classes, item@}item {/@}last"></div>'
+    var tmpl = '<div class="{classes, item@}{item$} {/@}last"></div>'
     var data = {
       classes: ['label', 'label-error']
     }
@@ -103,7 +103,7 @@ describe('Traverse', function () {
 
 describe('Compile', function () {
   it('Basic', function () {
-    var tmpl = '<div class="{classes, item@}item {/@}last">{user?}hello{:?}no body{/?}</div>'
+    var tmpl = '<div class="{classes, item@}{item$} {/@}last">{user?}hello{:?}no body{/?}</div>'
     var render = jayce.compile(tmpl)
     expect(render).to.be.a('function')
     
@@ -123,7 +123,7 @@ describe('Compile', function () {
 
 describe('Template file', function () {
   it('Complex template', function () {
-    var tmpl = fs.readFileSync('./tmpl/base.jay')
+    var tmpl = fs.readFileSync('./test/tmpl/base.jay')
     var data = {
       nav: [
         {
@@ -146,7 +146,7 @@ describe('Template file', function () {
     expect(html).to.contain('<title>hello jayce</title>')
     expect(html).to.contain('<a href="/about.html">about</a>')
     expect(html).to.contain('After 1990')
-    expect(html).to.contain('my code: `&lt;div&gt;hello world&lt;div&gt;`')
+    expect(html).to.contain('my code: `&#60;div&#62;hello world&#60;/div&#62;`')
     expect(html).to.contain('<footer>Copyright by Boom Lee')
   })
 })
