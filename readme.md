@@ -15,6 +15,8 @@ var data = { ... }
 var html = render(data)
 ```
 
+In browser, you can use `jayce.min.js`, support AMD, CMD, or global mode.
+
 ## Syntax
 
 ### Variable
@@ -23,6 +25,20 @@ Wrap with `{}`, and end with `$`.
   
 ```html
 <div>{content$}</div>
+```
+
+### Filters
+
+Make up your filter for variables like this:
+
+```js
+jayce.filter('format', function (str) {
+  // Your code here
+})
+```
+
+```html
+<div>{content | format $}</div>
 ```
 
 ### Condition
@@ -43,7 +59,7 @@ Wrap with `{}` too. And more like this:
 
 ### Traverse
 
-Really simple:
+Really simple: (Also support object)
 
 ```html
 <ul>
@@ -51,6 +67,14 @@ Really simple:
     <li>{key$}:{item$}</li>
   {/@}
 </ul>
+```
+
+### Html Entities encode
+
+Default, all html entities in variables will be encoded. You can cancel by `#`:
+
+```html
+<div>{#content$}</div>
 ```
 
 ## Develop

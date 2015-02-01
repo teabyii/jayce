@@ -1,8 +1,8 @@
 {
   "name": "jayce",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Another simple template engine. Just a little different",
-  "main": "index.js",
+  "main": "jayce.js",
   "scripts": {
     "test": "node_modules/.bin/mocha"
   },
