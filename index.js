@@ -15,11 +15,10 @@
     root.jayce = factory()
   }
 })(this, function () {
-  /**
-   * Render function cache.
-   */
-  var _cache = {}
-  var _filters = {}
+
+  var _cache = {} // Render function cache.
+  var _filters = {} // Filters.
+  var _helpers = {} // Helpers, including `forEach` and so on.
   
   /**
    * Traverse each element in array.
@@ -30,11 +29,19 @@
    */
   function forEach(array, callback) {
     var i = 0, len = array.length
-    while(i < len) {
-      callback(array[i], i++)
+    if (len) {
+      while(i < len) {
+        callback(array[i], i++)
+      }
+    } else {
+      for (var item in array) {
+        callback(array[item], item)
+      }
     }
+    
     return array
   }
+  _helpers.forEach = forEach
   
   /**
    * Remove all space.
@@ -78,6 +85,7 @@
   function _escapeHTML(html) {
     return String(html).replace(/&(?![\w#]+;)|[<>"']/g, _escapeFn)
   }
+  _helpers.escape = _escapeHTML
   
   /**
    * Different template logic type support and pick variables.
@@ -110,10 +118,7 @@
       vars.push(target)
       var elem = arr[1]
       var index = arr[2]
-      return 'var i=0;len=' + target +
-        '.length;while(i<len){var ' + elem +
-        '=' + target +
-        '[i];' + (index ? 'var ' + index + '=i;' : '')
+      return '_$.forEach(' + target + ', function(' + elem + ',' + index + '){'
     }
     
     /**
@@ -151,7 +156,7 @@
             exp = exp.substr(1)
             code = _join(_filter(exp))
           } else {
-            code = _join('_$(' + _filter(exp) + ')')
+            code = _join('_$.escape(' + _filter(exp) + ')')
           }
           break
         case '?':
@@ -176,7 +181,7 @@
           code = _traverse(exp)
           break
         case '/@':
-          code = 'i++;}'
+          code = '});'
           break
         default:
       }
@@ -195,7 +200,7 @@
    */
   function Wrap(fn) {
     return function (data) {
-      return fn(data, _escapeHTML, _filters)
+      return fn(data, _helpers, _filters)
     }
   }
   /**
@@ -230,6 +235,7 @@
     code = header + code + 'return _out;'
     
     // Create render function and write cache.
+    // `_$` as helpers, `_$$` as filters.
     var render = new Function('data', '_$', '_$$', code)
     return (_cache[tmpl] = Wrap(render))
   }

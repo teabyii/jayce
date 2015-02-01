@@ -99,6 +99,19 @@ describe('Traverse', function () {
     var html = jayce.render(tmpl, data)
     expect(html).to.be('<div class="label label-error last"></div>')
   })
+  
+  it('Basic - Object', function () {
+    var tmpl = '<ul>{list, item, key@}<li>{key$}:{item$}</li>{/@}</ul>'
+    var data = {
+      list: {
+        a: 'hello',
+        b: 'world'
+      }
+    }
+    
+    var html = jayce.render(tmpl, data)
+    expect(html).to.be('<ul><li>a:hello</li><li>b:world</li></ul>')
+  })
 })
 
 describe('Compile', function () {
