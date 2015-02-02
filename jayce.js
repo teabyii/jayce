@@ -95,7 +95,12 @@
    * @returns
    */
   var RE_VAR = /\.?(?!\d)[\d\w_$]+/g // To get variable name from the expression.
-  function typeParse(codes, vars) {
+  var RE_END = /(?:\/\?|:\?|\/@)/ // To filter end.
+  function typeParse(codes, records) {
+    var vars = records.vars
+    var if_m = records.if_m
+    var each_m = records.each_m
+    
     /**
      * Output string join. Using `_out` as variable.
      *
@@ -118,7 +123,7 @@
       vars.push(target)
       var elem = arr[1]
       var index = arr[2]
-      return '_$.forEach(' + target + ', function(' + elem + ',' + index + '){'
+      return '_$.forEach(' + target + ', function(' + elem + (index ? ',' + index : '') + '){'
     }
     
     /**
@@ -147,20 +152,24 @@
       var exp = trimAll(codes[0])
       var sign = codes[1]
       var str = codes[2]
-    
+      
+      if ((exp === '' || exp === '#') && !RE_END.test(sign)) {
+        return _join('"{' + codes[0] + sign + '}' + str + '"')
+      }
+      
       switch (sign) {
         case '$':
           // Normal variables.
           if (exp.charAt(0) === '#') {
             // No escape.
             exp = exp.substr(1)
-            code = _join(_filter(exp))
           } else {
             code = _join('_$.escape(' + _filter(exp) + ')')
           }
           break
         case '?':
           // Condition.
+          records.if_m = if_m + 1
           forEach(exp.match(RE_VAR), function (item) {
             // When `obj.key`, `key` not a variable.
             if (!/\./.test(item)) {
@@ -170,17 +179,29 @@
           code = 'if(' + exp + '){'
           break
         case ':?':
+          if (if_m === 0) {
+            return _join('"{' + codes[0] + sign + '}' + str + '"')
+          }
           // Else.
           code = exp ? '}else if(' + exp +'){' : '}else{'
           break
         case '/?':
+          if (if_m === 0) {
+            return _join('"{' + codes[0] + sign + '}' + str + '"')
+          }
+          records.if_m = if_m - 1
           code = '}'
           break
         case '@':
           // Traverse.
+          records.each_m = each_m + 1
           code = _traverse(exp)
           break
         case '/@':
+          if (each_m === 0) {
+            return _join('"{' + codes[0] + sign + '}' + str + '"')
+          }
+          records.each_m = each_m - 1
           code = '});'
           break
         default:
@@ -190,7 +211,6 @@
     }
     return _join('"' + codes[0] + '"')
   }
-  
   
   /**
    * Wrap function to inject escape function and filters.
@@ -221,15 +241,19 @@
     // Parse template syntax and pick up variables in template.
     tmpl = stringify(tmpl)
     var code = ''
-    var vars = []
+    var records = {
+      vars: [],
+      if_m: 0,
+      each_m: 0
+    }
     forEach(tmpl.split(RE_LEFT), function (codes) {
       codes = codes.split(RE_RIGHT)
-      code += typeParse(codes, vars)
+      code += typeParse(codes, records)
     })
     
     // Variables assignment.
-    var header = 'var _out="";'
-    forEach(vars, function (item) {
+    var header = 'var _out="";data=data||{};'
+    forEach(records.vars, function (item) {
       header += 'var ' + item + '=data.' + item + ';'
     })
     code = header + code + 'return _out;'
