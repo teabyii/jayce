@@ -15,6 +15,14 @@ var data = { ... }
 var html = render(data)
 ```
 
+Or render directly (recommend)
+
+```js
+var jayce = require('jayce')
+var data = { ... }
+var html = jayce.render(data)
+```
+
 In browser, you can use `jayce.min.js`, support AMD, CMD, or global mode.
 
 ## Syntax
@@ -75,6 +83,18 @@ Default, all html entities in variables will be encoded. You can cancel by `#`:
 
 ```html
 <div>{#content$}</div>
+```
+
+### Incorrect type
+
+```html
+<div>{:?}</div>
+```
+
+Will not throw error, it will output:
+
+```html
+<div>{:?}</div>
 ```
 
 ## Develop
