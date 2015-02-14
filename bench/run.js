@@ -67,5 +67,4 @@ suite
   .on('complete', function() {
     console.log('Fastest is ' + this.filter('fastest').pluck('name'));
   })
-  // run async
   .run({ 'async': true });

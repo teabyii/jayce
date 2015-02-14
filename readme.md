@@ -110,4 +110,5 @@ npm test
 - Easier to debug.
 - Functional features.
 - More test.
-- Benchmark
+- More Benchmarks.
+- High preformance.

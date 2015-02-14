@@ -1,4 +1,5 @@
 /test/
+/bench/
 .editorconfig
 .gitignore
 .jshintrc
