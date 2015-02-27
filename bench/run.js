@@ -3,7 +3,6 @@ var Benchmark = require('benchmark')
 /**
  * Compare with:
  *   - handlebars
- *   - dust
  *   - mustache
  *   - art-template
  *   - dot
