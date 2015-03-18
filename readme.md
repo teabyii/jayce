@@ -102,7 +102,19 @@ Will not throw error, it will output:
 Now there are some simple test cases in `./test`. Run:
 
 ```shell
-npm test
+make test
+```
+
+And get benchmarks by:
+
+```shell
+make benchs
+```
+
+Build minimum:
+
+```shell
+make build
 ```
 
 ## TODO

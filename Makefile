@@ -9,6 +9,6 @@ test: jshint
 benchs:
 	@ node bench/run.js
 	
-build:
+build: test
 	@ $(BIN)uglifyjs jayce.js -o jayce.min.js -c -m
 	
